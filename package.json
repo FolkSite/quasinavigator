@@ -1,0 +1,25 @@
+{
+  "name": "quasinavigator",
+  "version": "0.0.1",
+  "description": "AJAX navigation",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mishantrop/quasinavigator.git"
+  },
+  "keywords": [
+    "ajax",
+    "jquery",
+    "javascript",
+    "js"
+  ],
+  "author": "mishantrop",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mishantrop/quasinavigator/issues"
+  },
+  "homepage": "https://github.com/mishantrop/quasinavigator#readme"
+}

@@ -23,15 +23,29 @@ $.fn.navigator = function(options) {
 	var loader = wrapper.find('[data-navigator="loader"]');
 	var messages = wrapper.find('[data-navigator="messages"]');
 
+	this.bindEventsPagination = function bindEventsPagination() {
+		var instance = this;
+		$(wrapper).find('[data-navigator="pagination"] a').on('click', function(e) {
+			e.preventDefault();
+			$.fn.navigator.state.page = parseInt($(this).attr('data-ci-pagination-page'));
+			instance.load();
+		});
+	};
+
+	this.bindEventsList = function bindEventsList() {
+		console.log('List!');
+	};
+
 	this.init = function init() {
 		this.load();
 	};
 
 	this.load = function load() {
 		$(loader).show();
-		
+		var instance = this;
 		var postData = {
-			mode: 'manager'
+			mode: 'manager',
+			page: $.fn.navigator.state.page,
 		};
 		
 		$.ajax({
@@ -40,7 +54,7 @@ $.fn.navigator = function(options) {
 			data: postData,
 			dataType: 'json',
 			type: 'POST',
-			url: $.fn.navigator.options.uri,
+			url: $.fn.navigator.options.uri + '/' + $.fn.navigator.state.page,
 			complete: function() {
 				$(loader).hide();
 			},
@@ -63,6 +77,11 @@ $.fn.navigator = function(options) {
 					
 					if ('html' in data) {
 						$(wrapper).find('[data-navigator="output"]').html(data.html);
+						instance.bindEventsList();
+					}
+					if ('pagination' in data) {
+						$(wrapper).find('[data-navigator="pagination"]').html(data.pagination);
+						instance.bindEventsPagination();
 					}
 					
 					if ('errors' in data && $.isArray(data.errors)) {
@@ -78,7 +97,6 @@ $.fn.navigator = function(options) {
 						}
 					}
 					// Вывод информационных сообщений
-					/*wrapper.find(messagesWrapperSelector).hide();
 					if ('messages' in data && $.isArray(data.messages)) {
 						if (data.messages.length > 0) {
 							var messagesList = '';
@@ -90,7 +108,7 @@ $.fn.navigator = function(options) {
 							messagesList = $.fn.navigator.options.messagesOpenTag + messagesList + $.fn.navigator.options.messagesCloseTag;
 							$(messages).html(messagesList).show();
 						}
-					}*/
+					}
 	                if ('success' in data) {
 	                    if (data.success) {
 	                        // Функция, которую нужно исполнить после успеха
